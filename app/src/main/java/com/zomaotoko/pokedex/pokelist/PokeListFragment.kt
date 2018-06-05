@@ -2,6 +2,7 @@ package com.zomaotoko.pokedex.pokelist
 
 import android.app.Fragment
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -31,6 +32,10 @@ class PokeListFragment : Fragment() {
             setHasFixedSize(true)
             adapter = viewAdapter
             layoutManager = viewManager
+            addItemDecoration(DividerItemDecoration(
+                    recyclerView.context,
+                    LinearLayoutManager.VERTICAL)
+            )
         }
     }
 }
