@@ -8,7 +8,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
+        configureToolbar()
+    }
+
+    private fun configureToolbar() {
         window.statusBarColor = getColor(R.color.colorPrimaryDark)
         setSupportActionBar(toolbar)
         updateToolbar()
