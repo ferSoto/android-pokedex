@@ -42,7 +42,7 @@ class PokeListCell : LinearLayout {
     var zoomContainer: ImageView? = null
         set(imageView) {
             if (imageView != null) {
-                zoomableImageView.target = imageView
+                zoomableImageView.enlargedImageView = imageView
             }
         }
 

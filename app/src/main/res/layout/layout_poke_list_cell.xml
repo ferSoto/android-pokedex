@@ -12,7 +12,7 @@
         android:layout_marginEnd="16dp"
         android:layout_width="60dp"
         android:layout_height="60dp">
-        <com.zomaotoko.zoomableimageview.ZoomableImageView
+        <com.zomaotoko.zoomableimageview.EnlargableImageView
             android:id="@+id/zoomableImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
