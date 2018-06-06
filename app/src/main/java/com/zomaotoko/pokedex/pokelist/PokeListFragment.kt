@@ -8,12 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.zomaotoko.pokedex.R
 
 import kotlinx.android.synthetic.main.fragment_poke_list.*
 
 class PokeListFragment : Fragment() {
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: PokeListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,4 +39,9 @@ class PokeListFragment : Fragment() {
             )
         }
     }
+
+    var zoomableContainer: ImageView? = null
+        set(imageView) {
+            viewAdapter.zoomContainer = imageView
+        }
 }
