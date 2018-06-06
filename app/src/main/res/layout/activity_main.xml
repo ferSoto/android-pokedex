@@ -27,11 +27,12 @@
         </FrameLayout>
     </LinearLayout>
     <RelativeLayout
+        android:id="@+id/zoomedImageBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
         <ImageView
-            android:id="@+id/zoomable"
+            android:id="@+id/zoomedImage"
             android:layout_width="200dp"
             android:layout_height="200dp" />
     </RelativeLayout>

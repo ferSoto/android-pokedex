@@ -1,8 +1,13 @@
 package com.zomaotoko.pokedex
 
+import android.animation.Animator
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
+import android.graphics.Color
+import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ViewTreeObserver
+import android.view.View
 import com.zomaotoko.pokedex.pokelist.PokeListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -30,8 +35,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        zoomable.post {
-            pokeListFragment.zoomableContainer = zoomable
+        zoomedImage.post {
+            pokeListFragment.zoomableContainer = zoomedImage
         }
+
+        
     }
 }

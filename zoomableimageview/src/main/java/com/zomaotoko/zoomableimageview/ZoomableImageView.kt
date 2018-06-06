@@ -1,10 +1,8 @@
 package com.zomaotoko.zoomableimageview
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+import android.animation.*
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -12,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
+import android.widget.RelativeLayout
 
 class ZoomableImageView : ImageView {
     companion object {
@@ -81,6 +80,19 @@ class ZoomableImageView : ImageView {
                 }
             })
             it.start()
+            (target?.parent as RelativeLayout).let { layout ->
+                layout.visibility = View.VISIBLE
+                ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, Color.parseColor("#77000000")).apply {
+                    duration = ANIMATION_DURATION
+                    addUpdateListener { animator ->
+                        layout.setBackgroundColor(animator.animatedValue as Int)
+                    }
+                }.start()
+
+                layout.setOnClickListener {
+                    target?.callOnClick()
+                }
+            }
         }
     }
 
@@ -117,6 +129,22 @@ class ZoomableImageView : ImageView {
                 }
             })
             it.start()
+
+            (target?.parent as RelativeLayout).let { layout ->
+                ValueAnimator.ofObject(ArgbEvaluator(), Color.parseColor("#77000000"), Color.TRANSPARENT).apply {
+                    duration = ANIMATION_DURATION
+                    addUpdateListener { animator ->
+                        layout.setBackgroundColor(animator.animatedValue as Int)
+                    }
+                    addListener(object: AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            layout.visibility = View.GONE
+                        }
+                    })
+                }.start()
+                layout.setOnClickListener(null)
+
+            }
         }
     }
 

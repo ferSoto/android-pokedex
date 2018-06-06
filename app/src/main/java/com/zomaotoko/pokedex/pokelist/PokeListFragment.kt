@@ -24,7 +24,7 @@ class PokeListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater?.inflate(R.layout.fragment_poke_list, container, false)!!
+        return inflater!!.inflate(R.layout.fragment_poke_list, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -35,8 +35,8 @@ class PokeListFragment : Fragment() {
             layoutManager = viewManager
             addItemDecoration(DividerItemDecoration(
                     recyclerView.context,
-                    LinearLayoutManager.VERTICAL)
-            )
+                    LinearLayoutManager.VERTICAL
+            ))
         }
     }
 
