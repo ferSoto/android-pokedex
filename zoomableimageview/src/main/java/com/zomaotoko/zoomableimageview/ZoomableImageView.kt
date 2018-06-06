@@ -18,7 +18,7 @@ class ZoomableImageView : ImageView {
         const val ANIMATION_DURATION = 240L
     }
 
-    lateinit var target: ImageView
+    private lateinit var targetDefaultRect: Rect
     private var animatorSet: AnimatorSet? = null
     private var isZoomed = false
 
@@ -26,15 +26,24 @@ class ZoomableImageView : ImageView {
         setOnClickListener { zoomIn() }
     }
 
+    var target: ImageView? = null
+        set(imageView) {
+            field = imageView
+            imageView?.let{
+                targetDefaultRect = it.globalRect.clone
+                it.visibility = GONE
+            }
+
+        }
+
     private fun zoomIn() {
         if (isZoomed) return
         isZoomed = true
         animatorSet?.cancel()
 
-        val startRect = getThisRect()
-        val (finalRect, offset) = getRectWithOffset()
-        startRect.adjustOffset(offset)
-        finalRect.adjustOffset(offset)
+        val startRect = this.globalRect
+        val finalRect = targetDefaultRect.clone
+        startRect.offset(0, - startRect.height() / 2)
 
         val startScale = if (finalRect.ratio > startRect.ratio) {
             startRect.scaleOnWidth(finalRect)
@@ -42,8 +51,8 @@ class ZoomableImageView : ImageView {
             startRect.scaleOnHeight(finalRect)
         }
 
-        target.let {
-            it.background = this.background
+        target?.let {
+            it.setImageDrawable(this.background)
             it.setOnClickListener { zoomOut(startRect, startScale) }
             it.visibility = View.VISIBLE
             it.pivotX = 0f
@@ -78,13 +87,15 @@ class ZoomableImageView : ImageView {
     private fun zoomOut(startRect: Rect, startScale: Float) {
         if (!isZoomed) return
         isZoomed = false
-
         runZoomOutAnimation(startRect, startScale)
     }
 
     private fun runZoomOutAnimation(startRect: Rect, startScale: Float) {
         fun animationEnd() {
-            target.visibility = View.GONE
+            with(target!!) {
+                setImageResource(0)
+                visibility = View.GONE
+            }
             animatorSet = null
         }
 
@@ -109,26 +120,20 @@ class ZoomableImageView : ImageView {
         }
     }
 
-    private fun getThisRect() : Rect {
-        val rect = Rect()
-        getGlobalVisibleRect(rect)
-        return rect
-    }
-
-    private fun getRectWithOffset() : Pair<Rect, Point> {
-        val rect = Rect()
-        val offset = Point()
-        target.getGlobalVisibleRect(rect, offset)
-        return Pair(rect, offset)
-    }
-
 
     // Extensions
 
-    private val Rect.ratio : Float
+    private val ImageView.globalRect: Rect
+        get() {
+            val rect = Rect()
+            getGlobalVisibleRect(rect)
+            return rect
+        }
+
+    private val Rect.ratio: Float
         get() = width().toFloat() / height().toFloat()
 
-    private fun Rect.scaleOnWidth(final: Rect) : Float {
+    private fun Rect.scaleOnWidth(final: Rect): Float {
         val scale = heightScale(final)
         val startWidth = scale * final.width()
         val delta = ((startWidth - width()) / 2).toInt()
@@ -137,7 +142,7 @@ class ZoomableImageView : ImageView {
         return scale
     }
 
-    private fun Rect.scaleOnHeight(final: Rect) : Float {
+    private fun Rect.scaleOnHeight(final: Rect): Float {
         val scale = widthScale(final)
         val startHeight = scale * final.height()
         val delta = ((startHeight - height()) / 2).toInt()
@@ -149,9 +154,8 @@ class ZoomableImageView : ImageView {
     private fun Rect.widthScale(rect: Rect) = width().toFloat() / rect.width().toFloat()
     private fun Rect.heightScale(rect: Rect) = height().toFloat() / rect.height().toFloat()
 
-    private fun Rect.adjustOffset(point: Point) {
-        offset(-point.x, -point.y)
-    }
+    private val Rect.clone: Rect
+        get() = Rect(left, top, right, bottom)
 
 
     // Constructors (all empty but required)
