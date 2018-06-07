@@ -19,6 +19,9 @@ class EnlargableImageView : ImageView {
     private var animatorSet: AnimatorSet? = null
     private var isEnlarged = false
 
+    private val transparent = Color.TRANSPARENT
+    private val enlargedBgColor = context.getColor(R.color.enlargedImageBackground)
+
     init {
         setOnClickListener { enlarge() }
     }
@@ -38,7 +41,7 @@ class EnlargableImageView : ImageView {
         animatorSet?.cancel()
 
         // Get rect for thumbnail and enlarged image.
-        // The reference to enlarged image initial rect should be kept.
+        // The reference to enlarged image's initial rect should be kept.
         // Also, move Y offset of thumbnail half height up.
         val startRect = this.globalRect
         val finalRect = enlargedInitialRect.clone
@@ -64,7 +67,7 @@ class EnlargableImageView : ImageView {
 
     private fun runEnlargeAnimation(startRect: Rect, finalRect: Rect, startScale: Float) {
         enlargeImage(startRect, finalRect, startScale)
-        animateBackground()
+        darkenBackground()
     }
 
     private fun enlargeImage(startRect: Rect, finalRect: Rect, startScale: Float) {
@@ -89,10 +92,10 @@ class EnlargableImageView : ImageView {
         }
     }
 
-    private fun animateBackground() {
+    private fun darkenBackground() {
         (enlargedImageView?.parent as RelativeLayout).let { layout ->
             layout.visibility = View.VISIBLE
-            ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, Color.parseColor("#77000000")).apply {
+            ValueAnimator.ofObject(ArgbEvaluator(), transparent, enlargedBgColor).apply {
                 duration = ANIMATION_DURATION
                 addUpdateListener { animator ->
                     layout.setBackgroundColor(animator.animatedValue as Int)
@@ -147,8 +150,9 @@ class EnlargableImageView : ImageView {
     }
 
     private fun restoreBackground() {
+        // Make transparent and disappear the background
         (enlargedImageView?.parent as RelativeLayout).let { layout ->
-            ValueAnimator.ofObject(ArgbEvaluator(), Color.parseColor("#77000000"), Color.TRANSPARENT).apply {
+            ValueAnimator.ofObject(ArgbEvaluator(), enlargedBgColor, transparent).apply {
                 duration = ANIMATION_DURATION
                 addUpdateListener { animator ->
                     layout.setBackgroundColor(animator.animatedValue as Int)
