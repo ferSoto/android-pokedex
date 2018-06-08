@@ -38,7 +38,5 @@ class MainActivity : AppCompatActivity() {
         zoomedImage.post {
             pokeListFragment.zoomableContainer = zoomedImage
         }
-
-        
     }
 }
