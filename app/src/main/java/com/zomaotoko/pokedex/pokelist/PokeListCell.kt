@@ -33,10 +33,11 @@ class PokeListCell : LinearLayout {
             numberTxt.text = "#$number"
         }
 
-    var image: Drawable? = null
+    var image: ImageView? = null
+        get() = zoomableImageView
         set(image) {
             field = image
-            image?.let { zoomableImageView.background = it }
+            image?.let { zoomableImageView.background = it.background }
         }
 
     var zoomContainer: ImageView? = null

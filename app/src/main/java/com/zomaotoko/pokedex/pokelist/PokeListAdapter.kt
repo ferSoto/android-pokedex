@@ -1,12 +1,14 @@
 package com.zomaotoko.pokedex.pokelist
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.zomaotoko.pokedex.R
 import com.zomaotoko.pokedex.dto.pokedata.Pokemon
 
-class PokeListAdapter(private var dataSet: ArrayList<Pokemon> = ArrayList()) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
+class PokeListAdapter(private var dataSet: ArrayList<Pokemon> = ArrayList(), val activity: Activity) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
     class ViewHolder(val view: PokeListCell) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,8 +23,8 @@ class PokeListAdapter(private var dataSet: ArrayList<Pokemon> = ArrayList()) : R
             val pokemon = dataSet[position]
             it.name = pokemon.name
             it.number = pokemon.id.toString()
-            it.image = it.context.getDrawable(R.drawable.ic_pokeball)
             it.zoomContainer = zoomContainer
+            Glide.with(activity).load(pokemon.sprites?.frontDefault).into(it.image!!)
             it.invalidate()
         }
     }

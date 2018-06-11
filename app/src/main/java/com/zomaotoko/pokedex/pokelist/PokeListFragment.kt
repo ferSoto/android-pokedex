@@ -34,7 +34,7 @@ class PokeListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = PokeListAdapter()
+        viewAdapter = PokeListAdapter(activity = activity)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
