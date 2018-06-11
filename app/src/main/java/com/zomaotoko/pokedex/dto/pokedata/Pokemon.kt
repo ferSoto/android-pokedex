@@ -15,7 +15,7 @@ data class Pokemon(
         var forms: ArrayList<APIResource>? = null,
         @SerializedName("game_indices") var gameIndices: ArrayList<VersionGameIndex>? = null,
         @SerializedName("held_items") var heldItems: ArrayList<PokemonHeldItem>? = null,
-        @SerializedName("location_area_encounters") var locationAreaEncounters: ArrayList<LocationAreaEncounters>? = null,
+        @SerializedName("location_area_encounters") var locationAreaEncounters: String? = null,
         var moves: ArrayList<PokemonMove>? = null,
         var species: APIResource? = null,
         var sprites: PokemonSprites? = null,

@@ -1,13 +1,12 @@
 package com.zomaotoko.pokedex.pokelist
 
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import com.zomaotoko.pokedex.R
+import com.zomaotoko.pokedex.dto.pokedata.Pokemon
 
-class PokeListAdapter(private var dataset: ArrayList<String>) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
+class PokeListAdapter(private var dataSet: ArrayList<Pokemon> = ArrayList()) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
     class ViewHolder(val view: PokeListCell) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -15,14 +14,16 @@ class PokeListAdapter(private var dataset: ArrayList<String>) : RecyclerView.Ada
         return ViewHolder(view)
     }
 
-    override fun getItemCount() = dataset.size
+    override fun getItemCount() = dataSet.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.view.let {
-            it.name = dataset[position]
-            it.number = position.toString()
+            val pokemon = dataSet[position]
+            it.name = pokemon.name
+            it.number = pokemon.id.toString()
             it.image = it.context.getDrawable(R.drawable.ic_pokeball)
             it.zoomContainer = zoomContainer
+            it.invalidate()
         }
     }
 
@@ -33,4 +34,10 @@ class PokeListAdapter(private var dataset: ArrayList<String>) : RecyclerView.Ada
                 notifyDataSetChanged()
             }
         }
+
+    fun updateDataSet(dataSet: ArrayList<Pokemon>) {
+        this.dataSet = dataSet
+        this.dataSet.sortBy { it.id }
+        notifyDataSetChanged()
+    }
 }
