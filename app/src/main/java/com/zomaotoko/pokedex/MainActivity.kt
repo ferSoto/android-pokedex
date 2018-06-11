@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateToolbar() {
         toolbar.navigationIcon = getDrawable(R.drawable.ic_pokeball)
+        toolbar.setNavigationOnClickListener {
+            pokeListFragment.populatePokeList()
+        }
         invalidateOptionsMenu()
     }
 

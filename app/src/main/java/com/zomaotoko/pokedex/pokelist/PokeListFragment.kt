@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,7 @@ class PokeListFragment : Fragment() {
     private lateinit var viewAdapter: PokeListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private var pokeList: ArrayList<Pokemon> = ArrayList()
+    private var pokeList: ArrayList<APIResource> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +55,6 @@ class PokeListFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        populatePokeList()
-    }
-
     var zoomableContainer: ImageView? = null
         set(imageView) {
             viewAdapter.zoomContainer = imageView
@@ -66,28 +62,24 @@ class PokeListFragment : Fragment() {
 
     // API calls
 
-    private fun populatePokeList(url: String? = null) {
+    fun populatePokeList(url: String? = null) {
         val service = buildPokemonService()
         val call = if (url == null) service.getEndPointResource() else service.getEndPointResource(url)
         call.enqueue(object : Callback<PokemonEndPointResponse> {
             override fun onFailure(call: Call<PokemonEndPointResponse>?, t: Throwable?) {
-
+                Log.e("PokéAPI", "Error while requesting pokémon's list")
             }
 
             override fun onResponse(call: Call<PokemonEndPointResponse>?, response: Response<PokemonEndPointResponse>?) {
                 val endPointResponse = response?.body()
                 endPointResponse?.let {
-                    AsyncTask.execute {
-                        it.results?.forEach { apiResource ->
-                            getPokemonResource(apiResource)
-                            runOnUiThread {
-                                viewAdapter.updateDataSet(pokeList)
-                            }
-                        }
+                    if (it.results != null) {
+                        pokeList.addAll(it.results!!)
+                        viewAdapter.updateDataSet(pokeList)
+                    }
 
-                        if (it.next != null) {
-                            populatePokeList(it.next)
-                        }
+                    if (it.next != null) {
+                        populatePokeList(it.next)
                     }
                 }
             }
@@ -98,7 +90,7 @@ class PokeListFragment : Fragment() {
         val service = buildPokemonService()
         val pokemon = service.getPokemonResource(resource.url).execute().body()
         if (pokemon != null) {
-            pokeList.add(pokemon)
+     //       pokeList.add(pokemon)
         }
     }
 
@@ -109,21 +101,4 @@ class PokeListFragment : Fragment() {
             .baseUrl(POKEAPI_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-    /*
-    * val retrofit = Retrofit.Builder().baseUrl("https://pokeapi.co/")
-                    .addConverterFactory(GsonConverterFactory.create()).build()
-            val service = retrofit.create(BerriesService::class.java)
-            val call = service.getBerry(1)
-            call.enqueue(object: Callback<Berry> {
-                override fun onFailure(call: Call<Berry>?, t: Throwable?) {
-
-                }
-
-                override fun onResponse(call: Call<Berry>?, response: Response<Berry>?) {
-                    val berry = response?.body()
-                    berry.toString()
-                }
-
-            })*/
 }

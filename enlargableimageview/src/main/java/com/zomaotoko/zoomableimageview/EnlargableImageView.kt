@@ -55,7 +55,7 @@ class EnlargableImageView : ImageView {
 
         // Show enlarged image and replace on click listener
         enlargedImageView?.let {
-            it.setImageDrawable(this.background)
+            it.setImageDrawable(drawable.constantState.newDrawable())
             it.setOnClickListener { restore(startRect, startScale) }
             it.visibility = View.VISIBLE
             it.pivotX = 0f
