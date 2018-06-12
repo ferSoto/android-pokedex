@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        pokeListFragment = (fragmentManager.findFragmentById(R.id.poke_fragment_list) as PokeListFragment)
+        pokeListFragment = (supportFragmentManager.findFragmentById(R.id.poke_fragment_list) as PokeListFragment)
         configureToolbar()
     }
 
@@ -24,9 +24,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateToolbar() {
         toolbar.navigationIcon = getDrawable(R.drawable.ic_pokeball)
-        toolbar.setNavigationOnClickListener {
-            pokeListFragment.populatePokeList()
-        }
         invalidateOptionsMenu()
     }
 

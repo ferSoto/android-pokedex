@@ -1,6 +1,7 @@
 package com.zomaotoko.pokedex.pokelist
 
 import android.app.Activity
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,7 +10,7 @@ import com.zomaotoko.pokedex.R
 import com.zomaotoko.pokedex.dto.APIResource
 import com.zomaotoko.pokedex.dto.pokedata.Pokemon
 
-class PokeListAdapter(private var dataSet: ArrayList<APIResource> = ArrayList(), val activity: Activity) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
+class PokeListAdapter(private var dataSet: ArrayList<PokeListElement> = ArrayList(), val activity: FragmentActivity) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
     class ViewHolder(val view: PokeListCell) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,7 +24,7 @@ class PokeListAdapter(private var dataSet: ArrayList<APIResource> = ArrayList(),
         holder.view.let {
             val pokemon = dataSet[position]
             it.name = pokemon.name!!
-            it.number = (position + 1).toString()
+            it.number = pokemon.id.toString()
             it.zoomContainer = zoomContainer
             //Glide.with(activity).load(pokemon.sprites?.frontDefault).into(it.image!!)
             it.invalidate()
@@ -38,7 +39,7 @@ class PokeListAdapter(private var dataSet: ArrayList<APIResource> = ArrayList(),
             }
         }
 
-    fun updateDataSet(dataSet: ArrayList<APIResource>) {
+    fun updateDataSet(dataSet: ArrayList<PokeListElement>) {
         this.dataSet = dataSet
         notifyDataSetChanged()
     }

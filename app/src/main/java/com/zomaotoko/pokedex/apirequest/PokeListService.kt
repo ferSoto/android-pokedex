@@ -8,7 +8,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface PokemonService {
+interface PokeListService {
     @GET(POKEMON_API_URL)
     fun getEndPointResource(): Call<PokemonEndPointResponse>
 
