@@ -1,7 +1,6 @@
-package com.zomaotoko.pokedex.pokelist
+package com.zomaotoko.pokedex.pokelist.items
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -10,7 +9,7 @@ import com.zomaotoko.pokedex.R
 
 import kotlinx.android.synthetic.main.layout_poke_list_cell.view.*
 
-class PokeListCell : LinearLayout {
+class PokeListItem : LinearLayout {
 
     init {
         inflateLayout()

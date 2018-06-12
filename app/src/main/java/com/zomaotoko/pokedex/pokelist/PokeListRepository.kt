@@ -52,7 +52,7 @@ class PokeListRepository {
     }
 
     private fun updateLiveData(apiResources: ArrayList<APIResource>) {
-        pokeList.addAll(apiResources.map {  PokeListElement(index.next(), it) })
+        pokeList.addAll(apiResources.map { PokeListElement(index.next(), it) })
         liveData.value = pokeList
     }
 

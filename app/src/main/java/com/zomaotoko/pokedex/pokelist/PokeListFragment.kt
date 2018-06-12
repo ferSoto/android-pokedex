@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.zomaotoko.pokedex.R
 import com.zomaotoko.pokedex.dto.APIResource
+import com.zomaotoko.pokedex.pokelist.items.PokeListAdapter
 
 import kotlinx.android.synthetic.main.fragment_poke_list.*
 
@@ -20,12 +21,10 @@ class PokeListFragment : Fragment() {
     private lateinit var viewAdapter: PokeListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private var pokeList: ArrayList<APIResource> = ArrayList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = PokeListAdapter(activity = activity!!)
+        viewAdapter = PokeListAdapter(this, activity!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,7 +33,6 @@ class PokeListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProviders.of(this).get(PokeListViewModel::class.java)
         with(recyclerView) {
             setHasFixedSize(true)
             adapter = viewAdapter
@@ -45,6 +43,7 @@ class PokeListFragment : Fragment() {
             ))
         }
 
+        val viewModel = ViewModelProviders.of(this).get(PokeListViewModel::class.java)
         viewModel.pokeListElements.observe(this, Observer {
             viewAdapter.updateDataSet(it!!)
         })
