@@ -3,7 +3,7 @@ package com.zomaotoko.pokedex.pokelist
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import com.zomaotoko.pokedex.apirequest.buildPokemonService
+import com.zomaotoko.pokedex.apirequest.buildPokeListService
 import com.zomaotoko.pokedex.dto.APIResource
 import com.zomaotoko.pokedex.dto.endpoint.PokemonEndPointResponse
 import retrofit2.Call
@@ -12,13 +12,13 @@ import retrofit2.Response
 
 import kotlin.coroutines.experimental.buildIterator
 
-class PokeListRepository() {
+class PokeListRepository {
     companion object {
         private const val TAG = "PokéListService"
         private const val ERROR_MESSAGE = "Error while requesting pokémon's list."
     }
 
-    private val pokeListService = buildPokemonService()
+    private val pokeListService = buildPokeListService()
     private val pokeList = ArrayList<PokeListElement>()
     private val liveData = MutableLiveData<ArrayList<PokeListElement>>()
 
@@ -36,9 +36,7 @@ class PokeListRepository() {
         call.enqueue(object : Callback<PokemonEndPointResponse> {
             override fun onResponse(call: Call<PokemonEndPointResponse>?, response: Response<PokemonEndPointResponse>?) {
                 response?.body()?.let { epResponse ->
-                    epResponse.results?.let { results ->
-                        updateLiveData(results)
-                    }
+                    epResponse.results?.let { updateLiveData(it) }
 
                     if (epResponse.next != null) {
                         requestPokeList(epResponse.next)
