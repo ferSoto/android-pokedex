@@ -10,8 +10,11 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.zomaotoko.pokedex.pokelist.PokeListElement
 
-class PokeListAdapter(fragment: Fragment, private val activity: FragmentActivity) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
+class PokeListAdapter(private val fragment: Fragment, private val listener: ItemClickListener) : RecyclerView.Adapter<PokeListAdapter.ViewHolder>() {
     class ViewHolder(val view: PokeListItem) : RecyclerView.ViewHolder(view)
+    interface ItemClickListener {
+        fun onItemClick(id: Int)
+    }
 
     private var currentId: Int = 0
     private var dataSet: ArrayList<PokeListElement> = ArrayList()
@@ -19,9 +22,10 @@ class PokeListAdapter(fragment: Fragment, private val activity: FragmentActivity
     private var viewModel: PokeListItemViewModel = ViewModelProviders.of(fragment).get(PokeListItemViewModel::class.java)
 
     init {
+
         viewModel.forms.observe(fragment, Observer {
             viewModel.askForPokemonForm(currentId)?.sprites?.frontDefault?.let {
-                Glide.with(activity).load(it).into(currentImageView)
+                Glide.with(fragment.activity as FragmentActivity).load(it).into(currentImageView)
             }
         })
     }
@@ -42,7 +46,7 @@ class PokeListAdapter(fragment: Fragment, private val activity: FragmentActivity
             it.zoomContainer = zoomContainer
             currentImageView = it.image!!
             viewModel.askForPokemonForm(currentId)?.sprites?.frontDefault?.let { sprite ->
-                Glide.with(activity).load(sprite).into(it.image!!)
+                Glide.with(fragment.activity as FragmentActivity).load(sprite).into(it.image!!)
             }
             it.invalidate()
         }

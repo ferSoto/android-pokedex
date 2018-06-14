@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface PokemonFormService {
-    @GET("api/v2/pokemon-form/{id}/")
+    @GET("$POKEMON_FORM_API/{id}/")
     fun getForm(@Path("id") id: Int): Call<PokemonForm>
 }

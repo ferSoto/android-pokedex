@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.zomaotoko.pokedex.pokelist.PokeListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PokeListFragment.ItemClickListener {
     private lateinit var pokeListFragment: PokeListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         pokeListFragment = (supportFragmentManager.findFragmentById(R.id.poke_fragment_list) as PokeListFragment)
+        pokeListFragment.listener = this
         configureToolbar()
     }
 
@@ -32,5 +33,9 @@ class MainActivity : AppCompatActivity() {
         zoomedImage.post {
             pokeListFragment.zoomableContainer = zoomedImage
         }
+    }
+
+    override fun onItemClick(id: Int) {
+
     }
 }

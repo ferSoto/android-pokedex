@@ -16,14 +16,19 @@ import com.zomaotoko.pokedex.pokelist.items.PokeListAdapter
 
 import kotlinx.android.synthetic.main.fragment_poke_list.*
 
-class PokeListFragment : Fragment() {
+class PokeListFragment : Fragment(), PokeListAdapter.ItemClickListener {
+    interface ItemClickListener {
+        fun onItemClick(id: Int)
+    }
+
     private lateinit var viewAdapter: PokeListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    var listener: ItemClickListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = PokeListAdapter(this, activity!!)
+        viewAdapter = PokeListAdapter(this, this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,4 +57,10 @@ class PokeListFragment : Fragment() {
         set(imageView) {
             viewAdapter.zoomContainer = imageView
         }
+
+    // Listener
+
+    override fun onItemClick(id: Int) {
+        listener?.onItemClick(id)
+    }
 }
