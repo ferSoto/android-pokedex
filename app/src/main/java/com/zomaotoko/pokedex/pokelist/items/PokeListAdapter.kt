@@ -16,17 +16,12 @@ class PokeListAdapter(private val fragment: Fragment, private val listener: Item
         fun onItemClick(id: Int)
     }
 
-    private var currentId: Int = 0
     private var dataSet: ArrayList<PokeListElement> = ArrayList()
-    private lateinit var currentImageView: ImageView
     private var viewModel: PokeListItemViewModel = ViewModelProviders.of(fragment).get(PokeListItemViewModel::class.java)
 
     init {
-
         viewModel.forms.observe(fragment, Observer {
-            viewModel.askForPokemonForm(currentId)?.sprites?.frontDefault?.let {
-                Glide.with(fragment.activity as FragmentActivity).load(it).into(currentImageView)
-            }
+            notifyDataSetChanged()
         })
     }
 
@@ -40,13 +35,15 @@ class PokeListAdapter(private val fragment: Fragment, private val listener: Item
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.view.let {
             val pokemon = dataSet[position]
-            currentId = pokemon.id
+            val pokemonID = pokemon.id
             it.name = pokemon.name!!
-            it.number = pokemon.id.toString()
+            it.number = pokemonID.toString()
             it.zoomContainer = zoomContainer
-            currentImageView = it.image!!
-            viewModel.askForPokemonForm(currentId)?.sprites?.frontDefault?.let { sprite ->
+            viewModel.askForPokemonForm(pokemonID)?.sprites?.frontDefault?.let { sprite ->
                 Glide.with(fragment.activity as FragmentActivity).load(sprite).into(it.image!!)
+            }
+            it.setOnClickListener {
+                listener.onItemClick(pokemonID)
             }
             it.invalidate()
         }
