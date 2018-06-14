@@ -20,8 +20,9 @@ class PokeListAdapter(fragment: Fragment, private val activity: FragmentActivity
 
     init {
         viewModel.forms.observe(fragment, Observer {
-            val formUrl = viewModel.askForPokemonForm(currentId)
-            Glide.with(activity).load(formUrl).into(currentImageView)
+            viewModel.askForPokemonForm(currentId)?.sprites?.frontDefault?.let {
+                Glide.with(activity).load(it).into(currentImageView)
+            }
         })
     }
 
@@ -39,7 +40,10 @@ class PokeListAdapter(fragment: Fragment, private val activity: FragmentActivity
             it.name = pokemon.name!!
             it.number = pokemon.id.toString()
             it.zoomContainer = zoomContainer
-            Glide.with(activity).load(viewModel.askForPokemonForm(currentId)).into(it.image!!)
+            currentImageView = it.image!!
+            viewModel.askForPokemonForm(currentId)?.sprites?.frontDefault?.let { sprite ->
+                Glide.with(activity).load(sprite).into(it.image!!)
+            }
             it.invalidate()
         }
     }

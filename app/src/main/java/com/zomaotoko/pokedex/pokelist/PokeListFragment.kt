@@ -12,10 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.zomaotoko.pokedex.R
-import com.zomaotoko.pokedex.dto.APIResource
 import com.zomaotoko.pokedex.pokelist.items.PokeListAdapter
 
 import kotlinx.android.synthetic.main.fragment_poke_list.*
+import kotlinx.android.synthetic.main.fragment_poke_list.view.*
 
 class PokeListFragment : Fragment() {
     private lateinit var viewAdapter: PokeListAdapter
