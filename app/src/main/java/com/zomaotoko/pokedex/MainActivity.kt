@@ -1,8 +1,10 @@
 package com.zomaotoko.pokedex
 
+import android.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.zomaotoko.pokedex.pokelist.PokeListFragment
+import com.zomaotoko.pokedex.pokemon.PokemonFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), PokeListFragment.ItemClickListener {
@@ -10,7 +12,6 @@ class MainActivity : AppCompatActivity(), PokeListFragment.ItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         pokeListFragment = (supportFragmentManager.findFragmentById(R.id.poke_fragment_list) as PokeListFragment)
         pokeListFragment.listener = this
@@ -35,7 +36,29 @@ class MainActivity : AppCompatActivity(), PokeListFragment.ItemClickListener {
         }
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onBackPressed() {
+        if (fragmentManager.backStackEntryCount > 1) {
+            fragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
+
+    // Listeners
+
+    override fun onItemClick(id: Int) {
+        addFragmentAnimated(PokemonFragment(), "mytag")
+    }
+
+
+    // Helper methods
+
+    private fun addFragmentAnimated(fragment: Fragment, tag: String) {
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.fragment_slide_in, R.animator.fragment_slide_out, R.animator.fragment_slide_in, R.animator.fragment_slide_out)
+                .add(fragmentContainer.id, fragment, tag)
+                .addToBackStack(null)
+                .commit()
     }
 }

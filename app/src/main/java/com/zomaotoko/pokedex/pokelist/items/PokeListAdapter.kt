@@ -36,7 +36,7 @@ class PokeListAdapter(private val fragment: Fragment, private val listener: Item
         holder.view.let {
             val pokemon = dataSet[position]
             val pokemonID = pokemon.id
-            it.name = pokemon.name!!
+            it.name = pokemon.name!!.capitalize()
             it.number = pokemonID.toString()
             it.zoomContainer = zoomContainer
             viewModel.askForPokemonForm(pokemonID)?.sprites?.frontDefault?.let { sprite ->
