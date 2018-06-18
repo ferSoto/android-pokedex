@@ -23,4 +23,20 @@
         <item name="android:textStyle">italic</item>
     </style>
 
+    <!-- Style for recycler view item title in pokémon details -->
+    <style name="PokeDetailItemTitle">
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Style for recycler view item content in pokémon details -->
+    <style name="PokeDetailItemContent" parent="PokeDetailItemTitle">
+        <item name="android:textStyle">normal</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.zomaotoko.pokedex.pokelist
+package com.zomaotoko.pokedex.pokelist.items
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

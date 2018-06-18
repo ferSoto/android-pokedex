@@ -58,6 +58,7 @@ class PokeListFragment : Fragment(), PokeListAdapter.ItemClickListener {
             viewAdapter.zoomContainer = imageView
         }
 
+
     // Listener
 
     override fun onItemClick(id: Int) {
