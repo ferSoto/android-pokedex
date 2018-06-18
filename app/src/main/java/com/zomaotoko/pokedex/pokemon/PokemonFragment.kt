@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,7 @@ import android.view.ViewGroup
 import com.zomaotoko.pokedex.R
 import com.zomaotoko.pokedex.pokemon.recyclerview.DetailAdapter
 import com.zomaotoko.pokedex.pokemon.recyclerview.PokemonViewModel
-import kotlinx.android.synthetic.main.fragment_poke_list.*
+import kotlinx.android.synthetic.main.fragment_pokemon.*
 
 class PokemonFragment : Fragment() {
     companion object {
@@ -29,26 +30,27 @@ class PokemonFragment : Fragment() {
 
     private var pokemonId: Int = 0
     private val detailAdapter = DetailAdapter()
+    private lateinit var viewModel: PokemonViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pokemonId = arguments!!.getInt(POKEMON_KEY, 0)
-        val viewModel = ViewModelProviders.of(this).get(PokemonViewModel::class.java)
-        viewModel.askForPokemon(id).observe(this, Observer {
-            it!![id]?.let {
-                detailAdapter.pokemon = it
-            }
-        })
+        viewModel = ViewModelProviders.of(activity as FragmentActivity).get(PokemonViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_pokemon, container, false)
+        return inflater.inflate(R.layout.fragment_pokemon, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(recyclerView) {
             adapter = detailAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-        return view
+        viewModel.askForPokemon(pokemonId).observe(this, Observer {
+            detailAdapter.pokemon = it!!.get(pokemonId)
+        })
     }
-
 }

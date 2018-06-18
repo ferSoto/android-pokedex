@@ -1,4 +1,4 @@
-package com.zomaotoko.pokedex.pokemon
+package com.zomaotoko.pokedex.pokemon.recyclerview
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -10,9 +10,12 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PokemonRepository {
-
     private val pokemonArray = SparseArray<Pokemon>()
     private val liveData = MutableLiveData<SparseArray<Pokemon>>()
+
+    init {
+        liveData.value = pokemonArray
+    }
 
     fun askForPokemon(id: Int): LiveData<SparseArray<Pokemon>> {
         if (pokemonArray[id] != null) {
@@ -23,9 +26,10 @@ class PokemonRepository {
         val call = service.getPokemonResource(id)
         call.enqueue(object : Callback<Pokemon> {
             override fun onResponse(call: Call<Pokemon>?, response: Response<Pokemon>?) {
-                response?.body()?.let { pokemon ->
-                    pokemonArray.setValueAt(id, pokemon)
-                    liveData.value = pokemonArray
+                val pokemon = response?.body()
+                if (pokemon != null) {
+                    pokemonArray.put(id, pokemon)
+                    liveData.value?.put(id, pokemon)
                 }
             }
 
