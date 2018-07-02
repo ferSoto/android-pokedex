@@ -68,10 +68,12 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
     private fun setTypes(view: DetailItem) {
         with(view) {
             title = "Types:"
-
             var content = ""
-            pokemon?.types?.forEach {
-                content += it.type?.name?.capitalize() + System.lineSeparator()
+            pokemon?.types?.let { types ->
+                types.forEach {
+                    content += it.type?.name?.capitalize()
+                    if (it != types.last()) content += System.lineSeparator()
+                }
             }
             this.content = content
         }
@@ -87,10 +89,12 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
     private fun setAbilities(view: DetailItem) {
         with(view) {
             title = "Abilities:"
-
             var content = ""
-            pokemon?.abilities?.forEach {
-                content += it.ability?.name?.capitalize() + System.lineSeparator()
+            pokemon?.abilities?.let { abilities ->
+                abilities.forEach {
+                    content += it.ability?.name?.capitalize()
+                    if (it != abilities.last()) content += System.lineSeparator()
+                }
             }
             this.content = content
         }
