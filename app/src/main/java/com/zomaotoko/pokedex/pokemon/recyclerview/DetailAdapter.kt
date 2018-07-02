@@ -6,7 +6,7 @@ import com.zomaotoko.pokedex.dto.pokedata.Pokemon
 
 class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
     companion object {
-        private const val POKEMON_PROPERTIES = 7
+        private const val POKEMON_PROPERTIES = 10
     }
 
     class ViewHolder(val view: DetailItem) : RecyclerView.ViewHolder(view)
@@ -30,9 +30,12 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
                 1 -> setName(it)
                 2 -> setHeight(it)
                 3 -> setWeight(it)
-                4 -> setTypes(it)
-                5 -> setBaseExperience(it)
-                else -> setAbilities(it)
+                4 -> setBaseExperience(it)
+                5 -> setTypes(it)
+                6 -> setAbilities(it)
+                7 -> setMoves(it)
+                8 -> setItems(it)
+                else -> setSpecies(it)
             }
         }
     }
@@ -65,6 +68,13 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
         }
     }
 
+    private fun setBaseExperience(view: DetailItem) {
+        with(view) {
+            title = "Base Experience:"
+            content = pokemon?.baseExperience.toString().capitalize()
+        }
+    }
+
     private fun setTypes(view: DetailItem) {
         with(view) {
             title = "Types:"
@@ -79,13 +89,6 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
         }
     }
 
-    private fun setBaseExperience(view: DetailItem) {
-        with(view) {
-            title = "Base Experience:"
-            content = pokemon?.baseExperience.toString().capitalize()
-        }
-    }
-
     private fun setAbilities(view: DetailItem) {
         with(view) {
             title = "Abilities:"
@@ -97,6 +100,43 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
                 }
             }
             this.content = content
+        }
+    }
+
+    private fun setMoves(view: DetailItem) {
+        with(view) {
+            title = "Moves:"
+            var content = ""
+            pokemon?.moves?.let { moves ->
+                moves.forEach {
+                    content += it.move?.name?.capitalize()
+                    if (it != moves.last()) content += System.lineSeparator()
+                }
+            }
+            this.content = content
+        }
+    }
+
+    private fun setItems(view: DetailItem) {
+        with(view) {
+            title = "Items:"
+            var content = ""
+            pokemon?.heldItems?.let { items ->
+                items.forEach {
+                    content += it.item?.name?.capitalize()
+                    if (it != items.last()) content += System.lineSeparator()
+                }
+            }
+            this.content = if (content != "") content else "None"
+        }
+    }
+
+    private fun setSpecies(view: DetailItem) {
+        with(view) {
+            title = "Species:"
+            pokemon?.species?.name?.let {
+                this.content = it.capitalize()
+            }
         }
     }
 }
