@@ -18,7 +18,7 @@ class DetailItem : RelativeLayout {
 
     private fun inflateLayout() {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.layout_pokemon_details, null)
+        val view = inflater.inflate(R.layout.layout_pokemon_details, this)
         titleTxt = view.findViewById(R.id.title_txt)
         contentTxt = view.findViewById(R.id.content_txt)
     }

@@ -17,7 +17,7 @@ class PokeListAdapter(private val fragment: Fragment, private val listener: Item
     }
 
     private var dataSet: ArrayList<PokeListElement> = ArrayList()
-    private var viewModel: PokeListItemViewModel = ViewModelProviders.of(fragment).get(PokeListItemViewModel::class.java)
+    private var viewModel: PokemonFormViewModel = ViewModelProviders.of(fragment.activity!!).get(PokemonFormViewModel::class.java)
 
     init {
         viewModel.forms.observe(fragment, Observer {

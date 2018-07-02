@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.SparseArray
 import com.zomaotoko.pokedex.dto.pokedata.PokemonForm
 
-class PokeListItemViewModel : ViewModel() {
+class PokemonFormViewModel : ViewModel() {
     private val repository = PokemonFormRepository()
 
     fun askForPokemonForm(id: Int) = repository.askForPokemonForm(id)

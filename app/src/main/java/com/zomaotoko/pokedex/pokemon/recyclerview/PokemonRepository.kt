@@ -11,14 +11,12 @@ import retrofit2.Response
 
 class PokemonRepository {
     private val pokemonArray = SparseArray<Pokemon>()
-    private val liveData = MutableLiveData<SparseArray<Pokemon>>()
+    private val liveData = MutableLiveData<Pokemon>()
 
-    init {
-        liveData.value = pokemonArray
-    }
 
-    fun askForPokemon(id: Int): LiveData<SparseArray<Pokemon>> {
+    fun askForPokemon(id: Int): LiveData<Pokemon> {
         if (pokemonArray[id] != null) {
+            liveData.value = pokemonArray[id]
             return liveData
         }
 
@@ -29,7 +27,7 @@ class PokemonRepository {
                 val pokemon = response?.body()
                 if (pokemon != null) {
                     pokemonArray.put(id, pokemon)
-                    liveData.value?.put(id, pokemon)
+                    liveData.value = pokemon
                 }
             }
 

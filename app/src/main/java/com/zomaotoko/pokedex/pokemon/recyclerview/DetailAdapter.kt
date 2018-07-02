@@ -40,28 +40,28 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
     private fun setNumber(view: DetailItem) {
         with(view) {
             title = "Number:"
-            content = pokemon?.id.toString()
+            content = pokemon?.id.toString().capitalize()
         }
     }
 
     private fun setName(view: DetailItem) {
         with(view) {
             title = "Name:"
-            content = pokemon?.name ?: ""
+            content = pokemon?.name?.capitalize() ?: ""
         }
     }
 
     private fun setHeight(view: DetailItem) {
         with(view) {
             title = "Height:"
-            content = pokemon?.height.toString()
+            content = pokemon?.height.toString().capitalize()
         }
     }
 
     private fun setWeight(view: DetailItem) {
         with(view) {
             title = "Weight:"
-            content = pokemon?.weight.toString()
+            content = pokemon?.weight.toString().capitalize()
         }
     }
 
@@ -71,7 +71,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
 
             var content = ""
             pokemon?.types?.forEach {
-                content += it.type?.name + System.lineSeparator()
+                content += it.type?.name?.capitalize() + System.lineSeparator()
             }
             this.content = content
         }
@@ -80,7 +80,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
     private fun setBaseExperience(view: DetailItem) {
         with(view) {
             title = "Base Experience:"
-            content = pokemon?.baseExperience.toString()
+            content = pokemon?.baseExperience.toString().capitalize()
         }
     }
 
@@ -90,7 +90,7 @@ class DetailAdapter : RecyclerView.Adapter<DetailAdapter.ViewHolder>() {
 
             var content = ""
             pokemon?.abilities?.forEach {
-                content += it.ability?.name + System.lineSeparator()
+                content += it.ability?.name?.capitalize() + System.lineSeparator()
             }
             this.content = content
         }

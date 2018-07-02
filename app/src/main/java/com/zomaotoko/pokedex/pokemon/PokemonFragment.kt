@@ -10,7 +10,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.zomaotoko.pokedex.R
+import com.zomaotoko.pokedex.dto.pokedata.PokemonForm
+import com.zomaotoko.pokedex.pokelist.items.PokemonFormViewModel
 import com.zomaotoko.pokedex.pokemon.recyclerview.DetailAdapter
 import com.zomaotoko.pokedex.pokemon.recyclerview.PokemonViewModel
 import kotlinx.android.synthetic.main.fragment_pokemon.*
@@ -30,12 +33,16 @@ class PokemonFragment : Fragment() {
 
     private var pokemonId: Int = 0
     private val detailAdapter = DetailAdapter()
-    private lateinit var viewModel: PokemonViewModel
+    private lateinit var pokemonViewModel: PokemonViewModel
+    private lateinit var pokemonFormViewModel: PokemonFormViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pokemonId = arguments!!.getInt(POKEMON_KEY, 0)
-        viewModel = ViewModelProviders.of(activity as FragmentActivity).get(PokemonViewModel::class.java)
+        with(activity as FragmentActivity) {
+            pokemonViewModel = ViewModelProviders.of(this).get(PokemonViewModel::class.java)
+            pokemonFormViewModel = ViewModelProviders.of(this).get(PokemonFormViewModel::class.java)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,8 +56,11 @@ class PokemonFragment : Fragment() {
             adapter = detailAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-        viewModel.askForPokemon(pokemonId).observe(this, Observer {
-            detailAdapter.pokemon = it!!.get(pokemonId)
+        pokemonViewModel.askForPokemon(pokemonId).observe(this, Observer {
+            detailAdapter.pokemon = it
         })
+        Glide.with(activity!!)
+                .load(pokemonFormViewModel.forms.value!![pokemonId].sprites?.frontDefault)
+                .into(pokemonImg)
     }
 }
