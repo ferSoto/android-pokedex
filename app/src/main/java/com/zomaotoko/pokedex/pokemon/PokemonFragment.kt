@@ -64,8 +64,11 @@ class PokemonFragment : Fragment() {
         }
 
         pokemonViewModel.askForPokemon(pokemonId).observe(this, Observer {
-            detailAdapter.pokemon = it
-            imageAdapter.setSprites(it?.sprites?.arrayList!!)
+            if (pokemonId == it?.id) {
+                // Set pokémon information if, and only if, pokémon id is equal to requested id.
+                detailAdapter.pokemon = it
+                imageAdapter.setSprites(it?.sprites?.arrayList!!)
+            }
         })
     }
 }
