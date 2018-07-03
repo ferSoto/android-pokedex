@@ -13,9 +13,11 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.zomaotoko.pokedex.R
 import com.zomaotoko.pokedex.dto.pokedata.PokemonForm
+import com.zomaotoko.pokedex.dto.pokedata.PokemonSprites
 import com.zomaotoko.pokedex.pokelist.items.PokemonFormViewModel
 import com.zomaotoko.pokedex.pokemon.recyclerview.DetailAdapter
 import com.zomaotoko.pokedex.pokemon.recyclerview.PokemonViewModel
+import com.zomaotoko.pokedex.pokemon.slideshow.ImageAdapter
 import kotlinx.android.synthetic.main.fragment_pokemon.*
 
 class PokemonFragment : Fragment() {
@@ -33,12 +35,14 @@ class PokemonFragment : Fragment() {
 
     private var pokemonId: Int = 0
     private val detailAdapter = DetailAdapter()
+    private lateinit var imageAdapter: ImageAdapter
     private lateinit var pokemonViewModel: PokemonViewModel
     private lateinit var pokemonFormViewModel: PokemonFormViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pokemonId = arguments!!.getInt(POKEMON_KEY, 0)
+        imageAdapter = ImageAdapter(activity!!)
         with(activity as FragmentActivity) {
             pokemonViewModel = ViewModelProviders.of(this).get(PokemonViewModel::class.java)
             pokemonFormViewModel = ViewModelProviders.of(this).get(PokemonFormViewModel::class.java)
@@ -52,15 +56,16 @@ class PokemonFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pokemonPager.adapter = imageAdapter
+
         with(recyclerView) {
             adapter = detailAdapter
             layoutManager = LinearLayoutManager(activity)
         }
+
         pokemonViewModel.askForPokemon(pokemonId).observe(this, Observer {
             detailAdapter.pokemon = it
+            imageAdapter.setSprites(it?.sprites?.arrayList!!)
         })
-        Glide.with(activity!!)
-                .load(pokemonFormViewModel.forms.value!![pokemonId].sprites?.frontDefault)
-                .into(pokemonImg)
     }
 }
