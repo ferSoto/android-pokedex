@@ -10,8 +10,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-import kotlin.coroutines.experimental.buildIterator
-
 class PokeListRepository {
     companion object {
         private const val TAG = "PokéListService"
@@ -22,7 +20,7 @@ class PokeListRepository {
     private val pokeList = ArrayList<PokeListElement>()
     private val liveData = MutableLiveData<ArrayList<PokeListElement>>()
 
-    private val index = buildIterator {
+    private val index = iterator {
         var counter = 1
         while (true) {
             yield(counter ++)
